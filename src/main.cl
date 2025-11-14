@@ -151,7 +151,8 @@
                              (channel-id (cdr (assoc :CHANNEL--ID edata)))
                              (content    (cdr (assoc :CONTENT edata)))
                              (message-id (cdr (assoc :ID edata)))
-                             (mentions   (cdr (assoc :MENTIONS edata))))
+                             (mentions   (cdr (assoc :MENTIONS edata)))
+                             (mentions-everyone (cdr (assoc :MENTION--EVERYONE edata))))
 
                         ;; Debug info
                         ; (format t "Message ID: ~A~%" message-id)
@@ -206,16 +207,12 @@
                                         "Life is like a box of chocolates!"
                                         nil)
                         )
-                        ;; If message contains a mention (besides the bot itself)
-                        (when (and mentions
-                                   (> (length mentions) 0)
-                                   (not (some (lambda (m)
-                                                (string= (cdr (assoc :ID m))
-                                                         *self-user-id*))
-                                              mentions)))
+                        ;; If message contains @everyone
+                        (when mentions-everyone
                           (send-message channel-id
                                         "https://tenor.com/view/bored-miserable-waste-time-forrest-gump-ping-pong-gif-9282097"
-                                        nil))
+                                        nil)
+                        )
                     )))))
 
                 (t
