@@ -206,6 +206,16 @@
                                         "Life is like a box of chocolates!"
                                         nil)
                         )
+                        ;; If message contains a mention (besides the bot itself)
+                        (when (and mentions
+                                   (> (length mentions) 0)
+                                   (not (some (lambda (m)
+                                                (string= (cdr (assoc :ID m))
+                                                         *self-user-id*))
+                                              mentions)))
+                          (send-message channel-id
+                                        "https://tenor.com/view/bored-miserable-waste-time-forrest-gump-ping-pong-gif-9282097"
+                                        nil))
                     )))))
 
                 (t
